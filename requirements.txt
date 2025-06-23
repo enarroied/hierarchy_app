@@ -1,0 +1,4 @@
+faker==37.4.0
+pandas==2.2.2
+plotly==6.0.1
+taipy==4.1.0
