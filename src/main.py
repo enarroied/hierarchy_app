@@ -94,6 +94,7 @@ with tgb.Page() as hierarchy_page:
 
     tgb.table(
         data="{df_selected}",
+        page_size=20,
         on_action=drill_down_row,
         columns=[
             "Group",
@@ -103,6 +104,9 @@ with tgb.Page() as hierarchy_page:
             "total_turnover",
             "total_workers",
         ],
+        filter=True,
+        downloadable=True,
+        number_format="%, f",
     )
 
 
