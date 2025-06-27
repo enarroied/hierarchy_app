@@ -1,7 +1,7 @@
 import pandas as pd
 
 import taipy.gui.builder as tgb
-from taipy.gui import Gui
+from taipy.gui import Gui, notify
 
 
 def reset_hierarchy(state, df_hierarchy):
@@ -55,6 +55,11 @@ def drill_down_row(state, var, value):
     with state as s:
         df_hierarchy = s.df_hierarchy.copy()
         df_previous = s.df_selected.copy()
+
+        if df_previous.loc[selected_row, "has_children"] == 0:
+            notify(s, "i", "this company has no subsidiaries")
+            return
+
         s.selected_level += 1
 
         update_values(
@@ -87,7 +92,18 @@ with tgb.Page() as hierarchy_page:
         tgb.part()
         tgb.part()
 
-    tgb.table(data="{df_selected}", on_action=drill_down_row)
+    tgb.table(
+        data="{df_selected}",
+        on_action=drill_down_row,
+        columns=[
+            "Group",
+            "Name",
+            "turnover",
+            "workers",
+            "total_turnover",
+            "total_workers",
+        ],
+    )
 
 
 if __name__ == "__main__":
