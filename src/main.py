@@ -4,38 +4,71 @@ import taipy.gui.builder as tgb
 from taipy.gui import Gui
 
 
+def reset_hierarchy(state, df_hierarchy):
+    state.df_selected = df_hierarchy[df_hierarchy["level"] == 0].reset_index(drop=True)
+
+
+def update_df_selected(state, df_hierarchy, selected_group, selected_level, parent_id):
+    df_selected = df_hierarchy[
+        (df_hierarchy.Group == selected_group)
+        & (df_hierarchy.level == selected_level)
+        & (df_hierarchy.parent_id == parent_id)
+    ].reset_index(drop=True)
+    state.df_selected = df_selected
+
+
+def update_values(
+    state,
+    group,
+    company,
+    level,
+    turnover,
+    workers,
+    parent_id,
+):
+    with state as s:
+        s.selected_group = group
+        s.selected_company = company
+        s.selected_level = level
+        s.total_turnover = turnover
+        s.total_workers = workers
+        s.parent_id = parent_id
+
+
 def get_level_0(state):
     with state as s:
         df_hierarchy = s.df_hierarchy.copy()
-        s.df_selected = df_hierarchy[df_hierarchy["level"] == 0].reset_index(drop=True)
-        s.selected_group = "All Groups"
-        s.selected_company = "All Companies"
-        s.selected_level = 0
-        s.total_turnover = 0
-        s.total_workers = 0
-        s.parent_id = None
+        update_values(
+            s,
+            group="All Groups",
+            company="All Companies",
+            level=0,
+            turnover=0,
+            workers=0,
+            parent_id=None,
+        )
+        reset_hierarchy(s, df_hierarchy)
 
 
 def drill_down_row(state, var, value):
     selected_row = value.get("index")
     with state as s:
-        df_previous = s.df_selected.copy()
         df_hierarchy = s.df_hierarchy.copy()
+        df_previous = s.df_selected.copy()
         s.selected_level += 1
 
-        s.selected_group = df_previous.loc[selected_row, "Group"]
-        s.selected_company = df_previous.loc[selected_row, "Name"]
-        s.total_turnover = df_previous.loc[selected_row, "total_turnover"]
-        s.total_workers = df_previous.loc[selected_row, "total_workers"]
-
-        s.parent_id = df_previous.loc[selected_row, "id"]
-
-        df_selected = df_hierarchy[
-            (df_hierarchy.Group == s.selected_group)
-            & (df_hierarchy.level == s.selected_level)
-            & (df_hierarchy.parent_id == s.parent_id)
-        ].reset_index(drop=True)
-        s.df_selected = df_selected
+        update_values(
+            s,
+            group=df_previous.loc[selected_row, "Group"],
+            company=df_previous.loc[selected_row, "Name"],
+            level=s.selected_level,
+            turnover=df_previous.loc[selected_row, "total_turnover"],
+            workers=df_previous.loc[selected_row, "total_workers"],
+            parent_id=df_previous.loc[selected_row, "id"],
+        )
+        update_df_selected(
+            s, df_hierarchy, s.selected_group, s.selected_level, s.parent_id
+        )
 
 
 def on_init(state):
