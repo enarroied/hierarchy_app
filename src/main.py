@@ -123,7 +123,7 @@ with tgb.Page() as hierarchy_page:
         with tgb.layout("1 1 1"):
             with tgb.part(class_name="card"):
                 tgb.text(
-                    "## **Selected** company:", mode="md", class_name="color-primary"
+                    "## **Selected** Company:", mode="md", class_name="color-primary"
                 )
                 tgb.text(
                     "### {selected_company}", mode="md", class_name="color-secondary"
