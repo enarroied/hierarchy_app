@@ -52,11 +52,9 @@ def get_level_0(state):
 
 
 def select_companies_from_row(
-    state, group, company, level, turnover, workers, parent_id
+    state, df_hierarchy, group, company, level, turnover, workers, parent_id
 ):
     with state as s:
-        df_hierarchy = s.df_hierarchy.copy()
-
         update_values(
             s,
             group=group,
@@ -76,10 +74,10 @@ def drill_down_row(state, var, value):
     selected_row = value.get("index")
     with state as s:
         df_previous = s.df_selected.copy()
-
         if df_previous.loc[selected_row, "has_children"] == 0:
             notify(s, "i", "this company has no subsidiaries")
             return
+        df_hierarchy = s.df_hierarchy.copy()
 
         group = df_previous.loc[selected_row, "Group"]
         company = df_previous.loc[selected_row, "Name"]
@@ -90,6 +88,7 @@ def drill_down_row(state, var, value):
         s.selected_level += 1
         select_companies_from_row(
             s,
+            df_hierarchy=df_hierarchy,
             group=group,
             company=company,
             level=s.selected_level,
