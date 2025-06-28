@@ -51,31 +51,52 @@ def get_level_0(state):
         s.is_go_up_active = False
 
 
+def select_companies_from_row(
+    state, group, company, level, turnover, workers, parent_id
+):
+    with state as s:
+        df_hierarchy = s.df_hierarchy.copy()
+
+        update_values(
+            s,
+            group=group,
+            company=company,
+            level=level,
+            turnover=turnover,
+            workers=workers,
+            parent_id=parent_id,
+        )
+        update_df_selected(s, df_hierarchy, group, level, s.parent_id)
+        s.is_go_up_active = (
+            True  # If we go down or not all the way up, this is alsways True
+        )
+
+
 def drill_down_row(state, var, value):
     selected_row = value.get("index")
     with state as s:
-        df_hierarchy = s.df_hierarchy.copy()
         df_previous = s.df_selected.copy()
 
         if df_previous.loc[selected_row, "has_children"] == 0:
             notify(s, "i", "this company has no subsidiaries")
             return
 
-        s.selected_level += 1
+        group = df_previous.loc[selected_row, "Group"]
+        company = df_previous.loc[selected_row, "Name"]
+        turnover = df_previous.loc[selected_row, "total_turnover"]
+        workers = df_previous.loc[selected_row, "total_workers"]
+        parent_id = df_previous.loc[selected_row, "id"]
 
-        update_values(
+        s.selected_level += 1
+        select_companies_from_row(
             s,
-            group=df_previous.loc[selected_row, "Group"],
-            company=df_previous.loc[selected_row, "Name"],
+            group=group,
+            company=company,
             level=s.selected_level,
-            turnover=df_previous.loc[selected_row, "total_turnover"],
-            workers=df_previous.loc[selected_row, "total_workers"],
-            parent_id=df_previous.loc[selected_row, "id"],
+            turnover=turnover,
+            workers=workers,
+            parent_id=parent_id,
         )
-        update_df_selected(
-            s, df_hierarchy, s.selected_group, s.selected_level, s.parent_id
-        )
-        s.is_go_up_active = True  # If we go down at least once, this is alsways True
 
 
 def go_up(state):
