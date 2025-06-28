@@ -79,7 +79,12 @@ def drill_down_row(state, var, value):
 
 
 def go_up(state):
-    pass
+    with state as s:
+        level = s.selected_level
+        if level == 1:
+            get_level_0(s)
+        else:
+            pass
 
 
 def on_init(state):
