@@ -79,23 +79,23 @@ def drill_down_row(state, var, value):
             return
         df_hierarchy = s.df_hierarchy.copy()
 
-        group = df_previous.loc[selected_row, "Group"]
-        company = df_previous.loc[selected_row, "Name"]
-        turnover = df_previous.loc[selected_row, "total_turnover"]
-        workers = df_previous.loc[selected_row, "total_workers"]
-        parent_id = df_previous.loc[selected_row, "id"]
-
         s.selected_level += 1
         select_companies_from_row(
             s,
             df_hierarchy=df_hierarchy,
-            group=group,
-            company=company,
+            group=df_previous.loc[selected_row, "Group"],
+            company=df_previous.loc[selected_row, "Name"],
             level=s.selected_level,
-            turnover=turnover,
-            workers=workers,
-            parent_id=parent_id,
+            turnover=df_previous.loc[selected_row, "total_turnover"],
+            workers=df_previous.loc[selected_row, "total_workers"],
+            parent_id=df_previous.loc[selected_row, "id"],
         )
+
+
+def select_grandparent(df_hierarchy, df_current):
+    parent_id = df_current.loc[0, "parent_id"]
+    grandparent_row = df_hierarchy.index[df_hierarchy["id"] == parent_id]
+    return grandparent_row[0]
 
 
 def go_up(state):
@@ -104,7 +104,22 @@ def go_up(state):
         if level == 1:
             get_level_0(s)
         else:
-            pass
+            df_hierarchy = s.df_hierarchy.copy()
+            df_current = s.df_selected.copy()
+
+            gdp_index = select_grandparent(df_hierarchy, df_current)
+
+            s.selected_level -= 1
+            select_companies_from_row(
+                s,
+                df_hierarchy=df_hierarchy,
+                group=df_hierarchy.loc[gdp_index, "Group"],
+                company=df_hierarchy.loc[gdp_index, "Name"],
+                level=s.selected_level,
+                turnover=df_hierarchy.loc[gdp_index, "total_turnover"],
+                workers=df_hierarchy.loc[gdp_index, "total_workers"],
+                parent_id=df_hierarchy.loc[gdp_index, "parent_id"],
+            )
 
 
 def on_init(state):
