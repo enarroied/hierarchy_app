@@ -48,6 +48,7 @@ def get_level_0(state):
             parent_id=None,
         )
         reset_hierarchy(s, df_hierarchy)
+        s.is_go_up_active = False
 
 
 def drill_down_row(state, var, value):
@@ -74,6 +75,11 @@ def drill_down_row(state, var, value):
         update_df_selected(
             s, df_hierarchy, s.selected_group, s.selected_level, s.parent_id
         )
+        s.is_go_up_active = True  # If we go down at least once, this is alsways True
+
+
+def go_up(state):
+    pass
 
 
 def on_init(state):
@@ -87,11 +93,24 @@ with tgb.Page() as hierarchy_page:
 
     tgb.html("hr")
 
-    with tgb.layout("1 1 1"):
-        tgb.part()
-        tgb.part()
-        tgb.part()
+    with tgb.part(id="selected-company"):
+        with tgb.layout("1 1 1"):
+            with tgb.part(class_name="card"):
+                tgb.text(
+                    "## **Selected** company:", mode="md", class_name="color-primary"
+                )
+                tgb.text(
+                    "### {selected_company}", mode="md", class_name="color-secondary"
+                )
+            tgb.metric("{total_turnover}", title="Turnover for Branch", type="linear")
+            tgb.metric("{total_workers}", title="Workers for Branch", type="linear")
 
+        tgb.button(
+            "⬆️ Go Up One Level ⬆️",
+            on_action=go_up,
+            active="{is_go_up_active}",
+            class_name="plain fullwidth",
+        )
     tgb.table(
         data="{df_selected}",
         page_size=20,
@@ -122,6 +141,8 @@ if __name__ == "__main__":
     total_workers = None
 
     parent_id = None
+
+    is_go_up_active = False
 
     gui = Gui(page=hierarchy_page)
     gui.run(
