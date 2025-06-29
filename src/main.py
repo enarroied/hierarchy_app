@@ -172,14 +172,33 @@ with tgb.Page() as hierarchy_page:
 
     tgb.html("hr")
 
-    with tgb.part(id="selected-company"):
-        with tgb.layout("1 1 1"):
+    with tgb.part(id="selected-group"):
+        with tgb.layout("1 1"):
+            with tgb.part(class_name="card"):
+                tgb.text(
+                    "## **Selected** Group:", mode="md", class_name="color-primary"
+                )
+                tgb.text(
+                    "### {selected_group}", mode="md", class_name="color-secondary"
+                )
             with tgb.part(class_name="card"):
                 tgb.text(
                     "## **Selected** Company:", mode="md", class_name="color-primary"
                 )
                 tgb.text(
                     "### {selected_company}", mode="md", class_name="color-secondary"
+                )
+    tgb.html("hr")
+
+    with tgb.part(id="company-info"):
+        with tgb.layout("1 1 1"):
+
+            with tgb.part(class_name="card"):
+                tgb.text(
+                    "## **Selected** Level:", mode="md", class_name="color-primary"
+                )
+                tgb.text(
+                    "### {selected_level}", mode="md", class_name="color-secondary"
                 )
             tgb.chart(figure="{turnover_metric}")
             tgb.chart(figure="{workers_metric}")
