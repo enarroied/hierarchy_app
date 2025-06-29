@@ -130,8 +130,11 @@ def drill_down_row(state, var, value):
 
 def select_grandparent(df_hierarchy, df_current):
     parent_id = df_current.loc[0, "parent_id"]
-    grandparent_row = df_hierarchy.index[df_hierarchy["id"] == parent_id]
-    return grandparent_row[0]
+    parent_row = df_hierarchy[df_hierarchy["id"] == parent_id].iloc[0]
+    grandparent_id = parent_row["parent_id"]
+    grandparent_row = df_hierarchy[df_hierarchy["id"] == grandparent_id]
+    gdp_index = grandparent_row.index[0]
+    return gdp_index
 
 
 def go_up(state):
@@ -154,7 +157,7 @@ def go_up(state):
                 level=s.selected_level,
                 turnover=df_hierarchy.loc[gdp_index, "total_turnover"],
                 workers=df_hierarchy.loc[gdp_index, "total_workers"],
-                parent_id=df_hierarchy.loc[gdp_index, "parent_id"],
+                parent_id=df_hierarchy.loc[gdp_index, "id"],
             )
 
 
