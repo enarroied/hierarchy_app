@@ -1,7 +1,45 @@
 import pandas as pd
+import plotly.graph_objects as go
 
 import taipy.gui.builder as tgb
 from taipy.gui import Gui, notify
+
+
+def create_linear_gauge(value, max_value, title):
+    """
+    Creates a linear gauge using Plotly.
+
+    Parameters:
+    - value (float): The current value of the metric.
+    - max_value (float): The maximum value of the gauge.
+    - title (str): The title of the gauge.
+    - unit (str): Optional unit string for display.
+
+    Returns:
+    - fig (go.Figure): A Plotly Figure object with the gauge.
+    """
+    fig = go.Figure(
+        go.Indicator(
+            mode="gauge+number",
+            value=value,
+            gauge={
+                "shape": "bullet",
+                "axis": {"range": [0, max_value]},
+                "bar": {"color": "lightgreen"},
+                "threshold": {
+                    "line": {"color": "red", "width": 2},
+                    "thickness": 0.75,
+                    "value": value,
+                },
+            },
+        )
+    )
+    fig.update_layout(
+        title={"text": title, "x": 0.5, "xanchor": "center"},
+        height=200,
+        margin=dict(l=40, r=40, t=60, b=20),
+    )
+    return fig
 
 
 def reset_hierarchy(state, df_hierarchy):
@@ -17,16 +55,30 @@ def update_df_selected(state, df_hierarchy, selected_group, selected_level, pare
     state.df_selected = df_selected
 
 
-def update_values(
-    state,
-    group,
-    company,
-    level,
-    turnover,
-    workers,
-    parent_id,
+def get_level_0(state):
+    with state as s:
+        df_hierarchy = s.df_hierarchy.copy()
+        s.selected_group = "All Groups"
+        s.selected_company = "All Companies"
+        s.selected_level = 0
+        s.total_turnover = 0
+        s.total_workers = 0
+        s.parent_id = None
+        s.max_group_turnover = 10
+        s.max_group_workers = 10
+
+        reset_hierarchy(s, df_hierarchy)
+        s.is_go_up_active = False
+
+        s.turnover_metric = create_linear_gauge(0, 100, title="No company selected")
+        s.workers_metric = create_linear_gauge(0, 100, title="No company selected")
+
+
+def select_companies_from_row(
+    state, df_hierarchy, group, company, level, turnover, workers, parent_id
 ):
     with state as s:
+
         s.selected_group = group
         s.selected_company = company
         s.selected_level = level
@@ -34,36 +86,20 @@ def update_values(
         s.total_workers = workers
         s.parent_id = parent_id
 
+        s.max_group_turnover = df_hierarchy[
+            (df_hierarchy["Group"] == group) & (df_hierarchy["level"] == 0)
+        ]["total_turnover"].iloc[0]
+        s.max_group_workers = df_hierarchy[
+            (df_hierarchy["Group"] == group) & (df_hierarchy["level"] == 0)
+        ]["total_workers"].iloc[0]
 
-def get_level_0(state):
-    with state as s:
-        df_hierarchy = s.df_hierarchy.copy()
-        update_values(
-            s,
-            group="All Groups",
-            company="All Companies",
-            level=0,
-            turnover=0,
-            workers=0,
-            parent_id=None,
+        s.turnover_metric = create_linear_gauge(
+            turnover, s.max_group_turnover, title="Turnover (company/group)"
         )
-        reset_hierarchy(s, df_hierarchy)
-        s.is_go_up_active = False
-
-
-def select_companies_from_row(
-    state, df_hierarchy, group, company, level, turnover, workers, parent_id
-):
-    with state as s:
-        update_values(
-            s,
-            group=group,
-            company=company,
-            level=level,
-            turnover=turnover,
-            workers=workers,
-            parent_id=parent_id,
+        s.workers_metric = create_linear_gauge(
+            workers, s.max_group_workers, title="Workforce (company/group)"
         )
+
         update_df_selected(s, df_hierarchy, group, level, s.parent_id)
         s.is_go_up_active = (
             True  # If we go down or not all the way up, this is alsways True
@@ -142,8 +178,8 @@ with tgb.Page() as hierarchy_page:
                 tgb.text(
                     "### {selected_company}", mode="md", class_name="color-secondary"
                 )
-            tgb.metric("{total_turnover}", title="Turnover for Branch", type="linear")
-            tgb.metric("{total_workers}", title="Workers for Branch", type="linear")
+            tgb.chart(figure="{turnover_metric}")
+            tgb.chart(figure="{workers_metric}")
 
         tgb.button(
             "⬆️ Go Up One Level ⬆️",
@@ -183,6 +219,11 @@ if __name__ == "__main__":
     parent_id = None
 
     is_go_up_active = False
+    max_group_turnover = 0
+    max_group_workers = 0
+
+    turnover_metric = None
+    workers_metric = None
 
     gui = Gui(page=hierarchy_page)
     gui.run(
