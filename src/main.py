@@ -252,4 +252,5 @@ if __name__ == "__main__":
         use_reloader=True,
         title="Hierarchy ⬆️ ⬇️ App",
         dark_mode=False,
+        favicon="./img/favicon.png",
     )

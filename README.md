@@ -6,3 +6,7 @@
 # Hierarchy App
 
 A Taipy app displaying hierarchical data.
+
+## Favicon
+
+This app uses a favicon from [favicon.io](https://favicon.io/), check them out, it's a great site if you need quick emojis!
