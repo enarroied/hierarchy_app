@@ -27,8 +27,6 @@ with tgb.Page() as hierarchy_page:
                 tgb.text(
                     "### {selected_company}", mode="md", class_name="color-secondary"
                 )
-    tgb.html("hr")
-
     with tgb.part(id="company-info"):
         with tgb.layout("1 1 1"):
 
@@ -70,6 +68,8 @@ def on_init(state):
     get_level_0(state)
 
 
+stylekit = {"color-primary": "#0f80f0", "color-secondary": "#a5bacf"}
+
 if __name__ == "__main__":
 
     df_hierarchy = pd.read_parquet("./data/company_groups.parquet")
@@ -90,10 +90,14 @@ if __name__ == "__main__":
     turnover_metric = None
     workers_metric = None
 
-    gui = Gui(page=hierarchy_page)
+    gui = Gui(
+        page=hierarchy_page,
+        css_file="./css/main.css",
+    )
     gui.run(
         use_reloader=True,
         title="Hierarchy ⬆️ ⬇️ App",
         dark_mode=False,
         favicon="./img/favicon.png",
+        stylekit=stylekit,
     )

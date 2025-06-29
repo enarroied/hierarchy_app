@@ -1,0 +1,96 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background-color: #f4f4fa !important;
+  color: #333 !important;
+}
+
+h1, h2, h3, h4 {
+  margin: 0 0 10px 0 !important;
+}
+
+h1 {
+  font-size: 2em;
+  border-bottom: 2px solid #1f2d3d;
+  padding-bottom: 5px;
+}
+
+h2 {
+  font-size: 1.5em;
+  color: #3b4b5c;
+}
+
+b, strong {
+  color: #005f99;
+  font-weight: 700;
+}
+
+button:hover {
+  background-color: #004d80 !important;
+}
+
+/* === KPI BOXES === */
+#selected-group, #company-info {
+  padding: 15px;
+  margin: 10px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #e2e6ea, #f8fafc);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+#selected-group {
+  border-left: 5px solid #0077c2;
+}
+
+#company-info {
+  border-left: 5px solid #4a4a4a;
+}
+
+table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  margin-top: 24px !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  transition: all 0.3s ease !important;
+}
+
+th, td {
+  padding: 16px 20px !important;
+  text-align: left !important;
+  transition: background-color 0.3s ease, transform 0.2s ease !important;
+}
+td {
+  font-size: 1.3rem !important;
+}
+
+th {
+  background-color: #c0c6cc !important;
+  color: #1a202c !important;
+  font-weight: 700 !important;
+  font-size: 1.5rem !important;
+}
+
+/* === ROW COLORS === */
+tr:nth-child(even) {
+  background-color: #f4f7fa !important;
+}
+
+tr:nth-child(odd) {
+  background-color: #ffffff !important;
+}
+
+tr:hover td {
+  background-color: #d9ecfc !important;
+  transform: scale(1.015) !important;
+  cursor: pointer !important;
+  color: #0f80f0 !important;
+  font-weight: 600 !important;
+}
+
+tr {
+  transition: background-color 0.3s ease, transform 0.2s ease !important;
+}
