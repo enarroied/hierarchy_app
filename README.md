@@ -12,6 +12,10 @@ I added some KPI indicators and I styled to make it look more realistic, but t t
 
 ![Screen recording of the hierarchy app](img/demo.gif)
 
+## Medium Article
+
+[I wrote an article on Medium](https://medium.com/gitconnected/display-hierarchical-data-with-taipy-e8dbfe5dc312) about this app.
+
 ## Hierearchical Data
 
 This application is based on a True enterprise story!
