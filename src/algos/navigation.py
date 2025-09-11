@@ -39,7 +39,6 @@ def select_companies_from_row(
     state, df_hierarchy, group, company, level, turnover, workers, parent_id
 ):
     with state as s:
-
         s.selected_group = group
         s.selected_company = company
         s.selected_level = level

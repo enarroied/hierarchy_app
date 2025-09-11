@@ -1,7 +1,7 @@
 [project]
 name = "hierarchy-app"
 version = "0.1.0"
-description = "Add your description here"
+description = "An application that allows users to navigate a hierarchy from a table."
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
@@ -9,4 +9,9 @@ dependencies = [
     "pandas==2.2.2",
     "plotly==6.0.1",
     "taipy==4.1.0",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.13.0",
 ]

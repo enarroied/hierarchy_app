@@ -29,7 +29,6 @@ with tgb.Page() as hierarchy_page:
                 )
     with tgb.part(id="company-info"):
         with tgb.layout("1 1 1"):
-
             with tgb.part(class_name="card"):
                 tgb.text(
                     "## **Selected** Level:", mode="md", class_name="color-primary"
@@ -71,7 +70,6 @@ def on_init(state):
 stylekit = {"color-primary": "#0f80f0", "color-secondary": "#a5bacf"}
 
 if __name__ == "__main__":
-
     df_hierarchy = pd.read_parquet("./data/company_groups.parquet")
     df_selected = None
 
