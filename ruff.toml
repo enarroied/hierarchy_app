@@ -8,5 +8,5 @@ extend-select = [
     "N",   # pep8-naming
     "PD",  # pandas-vet
     "PTH", # pathlib rules
-    "E501"
+    "E501" # line length
 ]
