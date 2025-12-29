@@ -7,7 +7,7 @@
 
 A Taipy app displaying hierarchical data.
 
-This app's goal is to show how to navigate in a hierachy using a `table` element within a Taipy app.  
+This app's goal is to show how to navigate in a hierachy using a `table` element within a Taipy app.
 I added some KPI indicators and I styled to make it look more realistic, but t the key focus is on the aggregation of tree branches and how the app allows users to explore deeper levels by clicking on rows and move back up the hierarchy.
 
 ![Screen recording of the hierarchy app](img/demo.gif)
