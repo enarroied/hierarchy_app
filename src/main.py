@@ -2,7 +2,7 @@ import pandas as pd
 import taipy.gui.builder as tgb
 from taipy.gui import Gui
 
-from algos.navigation import drill_down_row, get_level_0, go_up
+from algorithms import drill_down_row, get_level_0, go_up
 
 with tgb.Page() as hierarchy_page:
     with tgb.layout("5 1"):

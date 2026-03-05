@@ -1,6 +1,6 @@
 from taipy.gui import notify
 
-from algos.charts import create_linear_gauge
+from algorithms import create_linear_gauge
 
 
 def reset_hierarchy(state, df_hierarchy):
