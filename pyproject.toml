@@ -3,15 +3,22 @@ name = "hierarchy-app"
 version = "0.1.0"
 description = "An application that allows users to navigate a hierarchy from a table."
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = [
     "faker==37.4.0",
     "pandas==2.2.2",
     "plotly==6.0.1",
-    "taipy==4.1.0",
+    "taipy==4.1.1",
 ]
 
 [dependency-groups]
 dev = [
-    "ruff>=0.13.0",
+    "pip-audit>=2.10.0",
+    "pre-commit>=4.5.1",
+    "pytest>=8.4.2",
+    "pytest-cov>=7.0.0",
+    "ruff>=0.13.1",
 ]
+[tool.pytest.ini_options]
+addopts = "--cov=src --cov-report=term-missing --cov-report=html"
+testpaths = ["tests"]
