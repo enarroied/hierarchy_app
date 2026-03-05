@@ -3,7 +3,9 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 ![Python Version](https://img.shields.io/badge/Python-3.12-blue.svg)
-![Taipy Version](https://img.shields.io/badge/Taipy-4.1-blue.svg)
+![Taipy Version](https://img.shields.io/badge/Taipy-4.1.1-blue.svg)
+[![codecov](https://codecov.io/github/enarroied/hierarchy_app/branch/master/graph/badge.svg?token=HLZVB6WFMT)](https://codecov.io/github/enarroied/hierarchy_app)
+![Tests](https://github.com/enarroied/hierarchy_app/actions/workflows/tests.yml/badge.svg)
 
 - [Hierarchy App](#hierarchy-app)
   - [Medium Article](#medium-article)
