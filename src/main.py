@@ -2,12 +2,14 @@ import pandas as pd
 import taipy.gui.builder as tgb
 from taipy.gui import Gui
 
-from algorithms import drill_down_row, get_level_0, go_up
+from callbacks import drill_down_row_callback, get_level_0_callback, go_up_callback
 
 with tgb.Page() as hierarchy_page:
     with tgb.layout("5 1"):
         tgb.text("# Hierarchy ⬆️ ⬇️ App", mode="md")
-        tgb.button("Reset", on_action=get_level_0, class_name="plain fullwidth")
+        tgb.button(
+            "Reset", on_action=get_level_0_callback, class_name="plain fullwidth"
+        )
 
     tgb.html("hr")
 
@@ -41,14 +43,14 @@ with tgb.Page() as hierarchy_page:
 
         tgb.button(
             "⬆️ Go Up One Level ⬆️",
-            on_action=go_up,
+            on_action=go_up_callback,
             active="{is_go_up_active}",
             class_name="plain fullwidth",
         )
     tgb.table(
         data="{df_selected}",
         page_size=20,
-        on_action=drill_down_row,
+        on_action=drill_down_row_callback,
         columns=[
             "Group",
             "Name",
@@ -64,7 +66,7 @@ with tgb.Page() as hierarchy_page:
 
 
 def on_init(state):
-    get_level_0(state)
+    get_level_0_callback(state)
 
 
 stylekit = {"color-primary": "#0f80f0", "color-secondary": "#a5bacf"}
