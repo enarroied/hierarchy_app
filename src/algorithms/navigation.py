@@ -7,7 +7,8 @@ def reset_hierarchy(df_hierarchy):
 
 
 def update_df_selected(df_hierarchy, selected_group, selected_level, parent_id):
-    """Returns the filtered hierarchy rows matching the given group, level and parent."""
+    """Returns the filtered hierarchy rows matching the given group, level
+    and parent."""
     return df_hierarchy[
         (df_hierarchy.Group == selected_group)
         & (df_hierarchy.level == selected_level)
@@ -34,7 +35,8 @@ def get_level_0_data(df_hierarchy):
 
 
 def get_group_max_values(df_hierarchy, group):
-    """Returns the max turnover and workers values for the top-level entry of a group."""
+    """Returns the max turnover and workers values for the top-level entry of
+    a group."""
     group_root = df_hierarchy[
         (df_hierarchy["Group"] == group) & (df_hierarchy["level"] == 0)
     ]

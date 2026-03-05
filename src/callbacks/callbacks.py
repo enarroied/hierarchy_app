@@ -38,7 +38,8 @@ def select_companies_from_row_callback(
 
 
 def drill_down_row_callback(state, var, value):
-    """Taipy table on-action callback: drills into the subsidiaries of the selected row."""
+    """Taipy table on-action callback: drills into the subsidiaries of the selected
+    row."""
     selected_row = value.get("index")
     with state as s:
         df_previous = s.df_selected.copy()
